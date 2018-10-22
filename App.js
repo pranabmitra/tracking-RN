@@ -1,6 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
+import MapView from 'react-native-maps';
+
 import RunDetails from './components/run-details';
 import RunFormattedDetails from './components/run-formatted-details';
 
@@ -15,6 +17,9 @@ const styles = StyleSheet.create({
     right: 0,
     flex: 1,  
     flexDirection: 'row',
+  },
+  map: {
+    ...StyleSheet.absoluteFillObject
   }
 });
 
@@ -33,7 +38,7 @@ export default class App extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={{flex: 1, backgroundColor: 'lightblue', textAlign: 'center', paddingTop: 20}}>Tracking App</Text>
+        <MapView style={styles.map} />
         <View style={styles.detailsWrapper}>
           <RunFormattedDetails title="Distance" value="0" unit="km"
             ref={(info) => this.distance = info}
