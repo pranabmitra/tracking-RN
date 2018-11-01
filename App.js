@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, Dimensions } from 'react-native';
 
 import MapView, { Marker, Polyline } from 'react-native-maps';
+import haversine from 'haversine';
 
 import RunDetails from './components/run-details';
 import RunFormattedDetails from './components/run-formatted-details';
@@ -29,13 +30,25 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     let watchID = navigator.geolocation.watchPosition((position) => {
+      let distance = 0,
+          direction = this.getDirection(position.coords.heading);
+
+      if (this.state.previousCoordinate) {
+        distance = this.state.distance + haversine(this.state.previousCoordinate, position.coords, { unit: 'mile'});
+        this.distance.setState({ value: distance });
+      }
+
+      this.speed.setState({ value: position.coords.speed });
+      this.direction.setState({ value: direction});
       this.setState({
         markers: [
           ...this.state.markers, {
             coordinate: position.coords,
             key: id++
           }
-        ]
+        ],
+        previousCoordinate: position.coords,
+        distance
       },
       null,
       {});
@@ -48,6 +61,30 @@ export default class App extends React.Component {
       this.speed.setState({ value: Math.random() * 15 });
       this.direction.setState({ value: 'NE' });
     }, 5000);
+  }
+
+  getDirection(x) {
+    let direction = 'N';
+  
+    if ((x > 0 && x <= 23) || (x > 338 && x <= 360)) {
+      direction = 'N';
+    } else if (x > 23 && x <= 65) {
+      direction = 'NE';
+    } else if (x > 65 && x <= 110) {
+      direction = 'E';
+    } else if (x > 110 && x <= 155) {
+      direction = 'SE';
+    } else if (x > 155 && x <= 203) {
+      direction = 'S';
+    } else if (x > 203 && x <= 248) {
+      direction = 'SW';
+    } else if (x > 248 && x <= 293) {
+      direction = 'W';
+    } else if (x > 293 && x <= 338) {
+      direction = 'NW';
+    }
+    
+    return direction;
   }
 
   componentWillUnmount() {
@@ -94,7 +131,7 @@ export default class App extends React.Component {
         </MapView>
       
         <View style={styles.detailsWrapper}>
-          <RunFormattedDetails title="Distance" value="0" unit="km"
+          <RunFormattedDetails title="Distance" value="0" unit="mile"
             ref={(info) => this.distance = info}
           />
           <RunFormattedDetails title="Speed" value="0" unit="km/h" 
