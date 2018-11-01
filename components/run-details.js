@@ -1,20 +1,22 @@
 import React, { Component} from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
+import { connect } from 'react-redux';
+
 import sharedStyles from '../styles/shared-styles';
 
-class RunDetails extends Component {
+export class RunDetails extends Component {
     constructor(props) {
         super(props);
         this.state = { value: this.props.value };
     }
 
     formatValue() {
-        return this.state.value;
+        return this.props.value;
     }
 
     render() {
-        let value = this.formatValue() || '-';
+        let value = this.props.value ? this.formatValue() : '-';
     
         return (
             <View style={sharedStyles.runDetailsContainer}>
@@ -25,4 +27,7 @@ class RunDetails extends Component {
     }
 }
 
-export default RunDetails;
+export default connect((state, own) => {
+    console.log('connect: ', state, own);
+    return { value: state[own.type]};
+})(RunDetails);

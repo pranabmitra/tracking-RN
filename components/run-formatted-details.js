@@ -1,9 +1,13 @@
-import RunDetails from './run-details';
+import { RunDetails } from './run-details';
+import { connect } from 'react-redux';
 
-class RunFormattedDetails extends RunDetails {
+export class RunFormattedDetails extends RunDetails {
     formatValue() {
-        return [parseFloat(this.state.value).toFixed(2), this.props.unit].join(' ');
+        console.log('run formatted props: ', this.props);
+        return [parseFloat(this.props.value).toFixed(2), this.props.unit].join(' ');
     }
 }
 
-export default RunFormattedDetails;
+export default connect((state, own) => {
+    return { value: state[own.type]};
+})(RunFormattedDetails);
