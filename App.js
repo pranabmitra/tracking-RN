@@ -55,7 +55,7 @@ export default class App extends React.Component {
         ],
         previousCoordinate: position.coords
       },
-      null,
+      error => {},
       {});
     });
 
@@ -93,8 +93,8 @@ export default class App extends React.Component {
             initialRegion={{
               latitude: 23.810331,
               longitude: 90.412521,
-              latitudeDelta: 0.02,
-              longitudeDelta: 0.02, 
+              latitudeDelta: 0.0922,
+              longitudeDelta: 0.0722, 
             }}
             >
               {/* <Polyline 

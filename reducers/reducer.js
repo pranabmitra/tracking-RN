@@ -14,7 +14,7 @@ export default function reducer(state = initialState, action = {}) {
         case 'SET_SPEED':
             return {
                 ...state,
-                speed: state.speed
+                speed: action.speed
             }
         case 'SET_DIRECTION':
             let x = action.heading,

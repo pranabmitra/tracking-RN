@@ -27,7 +27,6 @@ export class RunDetails extends Component {
     }
 }
 
-export default connect((state, own) => {
-    console.log('connect: ', state, own);
-    return { value: state[own.type]};
+export default connect((state, ownProps) => {
+    return { value: state[ownProps.type]};
 })(RunDetails);

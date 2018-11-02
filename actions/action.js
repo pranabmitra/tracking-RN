@@ -1,5 +1,4 @@
 export function incrementDistance(distance) {
-    console.log('inc dis: ', distance);
     return {
         type: 'INCREMENT_DISTANCE',
         distance
